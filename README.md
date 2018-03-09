@@ -7,6 +7,7 @@
 ## Lesson 1
 * What is Go
 * Brief History
+* Computer setup
 * Writing hello world
 * compiling/running
 * Vars, loops (should be quick if students already have experience)
@@ -16,6 +17,7 @@
 * imports
 * intro to goroutines
 * put everything together
+* Structs (time permitting, for more experienced kids)
 
 ## Lesson 3 
 * Show finished product of what we're building
