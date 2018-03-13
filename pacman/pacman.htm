@@ -382,27 +382,40 @@
 		</script>
 
 <style>
-.numberCircle {
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  padding: 8px;
-  background: #fff;
-  border: 2px solid #666;
-  color: #666;
-  text-align: center;
-  font: 32px Arial, sans-serif;
-}
+    .disabledBadge .numberCircle {
+        opacity: 0.3;
+    }
+    .badges{
+        margin:0 auto;
+        width:960px;
+    }
+	.badgeContainer{
+	    float:left;
+        padding:20px;
+	}
+    .numberCircle {
+        margin: 0 auto;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        padding: 8px;
+        background: #fff;
+        border: 2px solid #666;
+        color: #666;
+        text-align: center;
+        font: 32px Arial, sans-serif;
+        margin-bottom:5px;
+    }
 </style>
 
-		<div style="position:absolute;bottom:1;">
-			<div class="numberCircle">1</div> Start the Game
-			<div class="numberCircle" style="background:red;color:white;">2</div> Add one ghost
-			<div class="numberCircle" style="background:dodgerblue;color:white;">3</div> Track pacman movements
-			<div class="numberCircle" style="background:orange;color:white;">4</div> Randomly move ghost
-			<div class="numberCircle" style="background:limegreen;color:white;">5</div> Determine if pacman was caught
-			<div class="numberCircle" style="background:yellow;color:white;">6</div> Add more ghosts
-		</div>
-
+    <div class="badges">
+        <div id="startGameBadge" class="disabledBadge badgeContainer"><div class="numberCircle">1</div> Start the Game</div>
+        <div id="addGhostBadge" class="disabledBadge badgeContainer"><div class="numberCircle" style="background:red;color:white;">2</div> Add one ghost</div>
+        <div id="trackPacmanBadge" class="disabledBadge badgeContainer"><div class="numberCircle" style="background:dodgerblue;color:white;">3</div> Track pacman movements</div>
+        <div id="moveGhostBadge" class="disabledBadge badgeContainer"><div class="numberCircle" style="background:orange;color:white;">4</div> Randomly move ghost</div>
+        <div id="gameOverBadge" class="disabledBadge badgeContainer"><div class="numberCircle" style="background:limegreen;color:white;">5</div> Determine if pacman was caught</div>
+        <div id="moreGhostsBadge" class="disabledBadge badgeContainer"><div class="numberCircle" style="background:darkcyan;color:white;">6</div> Add more ghosts</div>
+    </div>
+    <div style="clear:both;"></div>
 </body>
 </html>
