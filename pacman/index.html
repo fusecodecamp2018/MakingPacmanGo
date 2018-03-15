@@ -151,6 +151,7 @@
 				player.update();
 				ghost.update();
 
+				console.log(">>> UPDATE <<<")
 				if(player.xp % CELL_SIZE == 0 && player.yp % CELL_SIZE == 0)
 				{
 					var cx = player.row = player.xp / CELL_SIZE;
