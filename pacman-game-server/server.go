@@ -9,7 +9,7 @@ func startGame(w http.ResponseWriter, r *http.Request){
 	fmt.Println(">> START GAME << ")
 	fmt.Println(r.URL.Query())
 
-	w.WriteHeader(http.StatusNotAcceptable)
+	w.WriteHeader(http.StatusOK)
 }
 
 func trackGhost(w http.ResponseWriter, r *http.Request){

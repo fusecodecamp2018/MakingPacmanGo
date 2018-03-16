@@ -366,21 +366,27 @@
     function startGame() {
         fetch("/api/startGame")
             .then(function (response) {
-//                        if(response.status === 200){
-                if (isPlaying) return;
-                isPlaying = true;
-                document.getElementById("score").innerHTML = "SCORE: " + score;
-                resetGame();
-                gameInterval = setInterval(run, 1);
-                info.style.opacity = 0;
-                infobg.style.opacity = 0;
-//						}else{
-//
-//						}
+                if (response.status === 200) {
+                    if (isPlaying) return;
+                    isPlaying = true;
+                    document.getElementById("score").innerHTML = "SCORE: " + score;
+                    resetGame();
+                    enableBadge("startGameBadge")
+                    gameInterval = setInterval(run, 1);
+                    info.style.opacity = 0;
+                    infobg.style.opacity = 0;
+                } else {
+                    showInfo("<h1 style='transform: rotate(90deg);'>:(</h1> <p>START GAME NOT IMPLEMENTED IN GO YET</p>")
+                }
             })
             .catch(function (ex) {
-                console.log('failed', ex);
+                showInfo("<h1 style='transform: rotate(90deg);'>:(</h1> <p>START GAME SERVER CALL FAILED. IS YOUR GO SERVER RUNNING??</p>")
             });
+    }
+
+    function enableBadge(badgeId){
+        var element = document.getElementById(badgeId)
+        element.classList.remove("disabledBadge");
     }
 
     function stopGame() {
