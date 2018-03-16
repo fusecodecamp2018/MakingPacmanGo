@@ -50,7 +50,7 @@ func isGameOver(w http.ResponseWriter, r *http.Request){
 	fmt.Println(">> GAME OVER << ")
 	fmt.Println(r.URL.Query())
 
-	w.WriteHeader(http.StatusAccepted)
+	w.WriteHeader(http.StatusOK)
 }
 
 func main() {

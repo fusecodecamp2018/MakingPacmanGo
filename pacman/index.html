@@ -28,6 +28,7 @@
     // game vars
     var gameInterval,
         ghostInterval,
+        gameOverInterval,
         score = 0,
         isPlaying, isKeyDown,
         lastX, lastY,
@@ -368,6 +369,7 @@
                     enableBadge("startGameBadge")
                     gameInterval = setInterval(run, 1);
                     ghostInterval = setInterval(moveGhosts, 500)
+                    gameOverInterval = setInterval(isGameOver, 500);
                     info.style.opacity = 0;
                     infobg.style.opacity = 0;
                 } else {
@@ -376,6 +378,24 @@
             })
             .catch(function (ex) {
                 showInfo("<h1 class='flippedSadFace'>:(</h1> <p>START GAME SERVER CALL FAILED. IS YOUR GO SERVER RUNNING??</p>")
+            });
+    }
+
+    function isGameOver(){
+        fetch("/api/isGameOver")
+            .then(function (response) {
+                if (response.status === 200) {
+                    response.text().then(function(text){
+                       if(text == "true"){
+                           onGameOver(false)
+                       }
+                    });
+                }else{
+                    showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS GAME OVER NOT IMPLEMENTED IN GO YET</p>")
+                }
+            })
+            .catch(function(ex){
+                showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS GAME OVER SERVER CALL FAILED. IS YOUR GO SERVER RUNNING??</p>")
             });
     }
 
@@ -388,6 +408,7 @@
         isPlaying = false;
         clearInterval(gameInterval);
         clearInterval(ghostInterval);
+        clearInterval(gameOverInterval);
     }
 </script>
 
