@@ -244,7 +244,11 @@
                             leftDown = text === "LEFT",
                             rightDown = text === "RIGHT";
 
-                        if (ghost.xp % CELL_SIZE === 0 && ghost.yp % CELL_SIZE === 0) {
+                        if(upDown == false && downDown == false && leftDown == false && rightDown == false){
+                            showInfo("<h1 class='flippedSadFace'>:(</h1> <p>MOVING OF GHOST NOT IMPLEMENTED. MUST RETURN UP, DOWN, LEFT or RIGHT.</p>");
+                        }else{
+                            enableBadge("moveGhostBadge");
+
                             var cx = ghost.row = ghost.xp / CELL_SIZE;
                             var cy = ghost.column = ghost.yp / CELL_SIZE;
 
@@ -263,18 +267,13 @@
                                         if (response.status !== 200) {
                                             showInfo("<h1 class='flippedSadFace'>:(</h1> <p>TRACKING GHOST MOVEMENTS NOT IMPLEMENTED</p>");
                                         } else {
-                                            enableBadge("moveGhostBadge");
+                                            enableBadge("trackGhostsBadge");
                                         }
                                     }).catch(function (ex) {
                                     console.log(ex)
                                     showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT TRACK GHOST MOVEMENTS</p>");
                                 });
                             }
-                        } else {
-                            if (upDown && ghost.dirY != -1 && ghost.dirX == 0) ghost.moveUp();
-                            else if (downDown && ghost.dirY != 1 && ghost.dirX == 0) ghost.moveDown();
-                            else if (leftDown && ghost.dirX != -1 && ghost.dirY == 0) ghost.moveLeft();
-                            else if (rightDown && ghost.dirX != 1 && ghost.dirY == 0) ghost.moveRight();
                         }
                     })
                 }
@@ -454,19 +453,19 @@
     </div>
     <div id="addGhostBadge" class="disabledBadge badgeContainer">
         <div class="numberCircle" style="background:red;color:white;">3</div>
-        Add one ghost
+        Add ghost to board
     </div>
     <div id="moveGhostBadge" class="disabledBadge badgeContainer">
         <div class="numberCircle" style="background:orange;color:white;">4</div>
-        Randomly move ghost
+        Randomly move ghosts
+    </div>
+    <div id="trackGhostsBadge" class="disabledBadge badgeContainer">
+        <div class="numberCircle" style="background:darkcyan;color:white;">5</div>
+        Track Ghosts
     </div>
     <div id="gameOverBadge" class="disabledBadge badgeContainer">
-        <div class="numberCircle" style="background:limegreen;color:white;">5</div>
+        <div class="numberCircle" style="background:limegreen;color:white;">6</div>
         Determine if pacman was caught
-    </div>
-    <div id="moreGhostsBadge" class="disabledBadge badgeContainer">
-        <div class="numberCircle" style="background:darkcyan;color:white;">6</div>
-        Add more ghosts
     </div>
 </div>
 <div style="clear:both;"></div>
