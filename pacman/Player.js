@@ -55,6 +55,10 @@ function Player(x, y, img)
 		this.animation.stop();
 	};
 
+	this.isStopped = function(){
+        return this.dirX === 0 && this.dirY === 0;
+	};
+
 	this.update = function()
 	{
 		this.xp += this.dirX;

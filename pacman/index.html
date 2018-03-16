@@ -177,49 +177,49 @@
     }
 
     function update() {
-
         player.update();
-        fetch("/api/trackPacman?x=" + player.xp + "&y=" + player.yp)
-            .then(function (response) {
-                if (response.status !== 200) {
-                    showInfo("<h1 class='flippedSadFace'>:(</h1> <p>TRACKING PACMANS MOVEMENTS NOT IMPLEMENTED</p>");
-                } else {
-                    console.log(">>> UPDATE <<<")
-                    if (player.xp % CELL_SIZE == 0 && player.yp % CELL_SIZE == 0) {
-                        var cx = player.row = player.xp / CELL_SIZE;
-                        var cy = player.column = player.yp / CELL_SIZE;
+        if (player.xp % CELL_SIZE === 0 && player.yp % CELL_SIZE === 0) {
+            var cx = player.row = player.xp / CELL_SIZE;
+            var cy = player.column = player.yp / CELL_SIZE;
 
-                        if (upDown && player.dirY > -1 && level.cellData[cx][cy - 1] != 0) player.moveUp();
-                        else if (downDown && player.dirY < 1 && level.cellData[cx][cy + 1] != 0) player.moveDown();
-                        else if (leftDown && player.dirX > -1 && level.cellData[cx - 1][cy] != 0) player.moveLeft();
-                        else if (rightDown && player.dirX < 1 && level.cellData[cx + 1][cy] != 0) player.moveRight();
-                        else if (player.dirX == 1 && level.cellData[cx + 1][cy] == 0) player.stopMovement();
-                        else if (player.dirX == -1 && level.cellData[cx - 1][cy] == 0) player.stopMovement();
-                        else if (player.dirY == 1 && level.cellData[cx][cy + 1] == 0) player.stopMovement();
-                        else if (player.dirY == -1 && level.cellData[cx][cy - 1] == 0) player.stopMovement();
+            if (upDown && player.dirY > -1 && level.cellData[cx][cy - 1] != 0) player.moveUp();
+            else if (downDown && player.dirY < 1 && level.cellData[cx][cy + 1] != 0) player.moveDown();
+            else if (leftDown && player.dirX > -1 && level.cellData[cx - 1][cy] != 0) player.moveLeft();
+            else if (rightDown && player.dirX < 1 && level.cellData[cx + 1][cy] != 0) player.moveRight();
+            else if (player.dirX == 1 && level.cellData[cx + 1][cy] == 0) player.stopMovement();
+            else if (player.dirX == -1 && level.cellData[cx - 1][cy] == 0) player.stopMovement();
+            else if (player.dirY == 1 && level.cellData[cx][cy + 1] == 0) player.stopMovement();
+            else if (player.dirY == -1 && level.cellData[cx][cy - 1] == 0) player.stopMovement();
 
-                        if (level.cellData[cx][cy] == 1) {
-                            level.pips[cx][cy].munch();
-                            level.cellData[cx][cy] = 2;
-                            ++score;
-                            document.getElementById("score").innerHTML = "SCORE: " + score;
-                            if (score == level.totalPips) {
-                                onGameOver(true);
-                            }
+            if(!player.isStopped()) {
+                fetch("/api/trackPacman?x=" + player.xp + "&y=" + player.yp)
+                    .then(function (response) {
+                        if (response.status !== 200) {
+                            showInfo("<h1 class='flippedSadFace'>:(</h1> <p>TRACKING PACMANS MOVEMENTS NOT IMPLEMENTED</p>");
+                        } else {
+                            enableBadge("trackPacmanBadge");
                         }
-                    }
-                    else {
-                        if (upDown && player.dirY != -1 && player.dirX == 0) player.moveUp();
-                        else if (downDown && player.dirY != 1 && player.dirX == 0) player.moveDown();
-                        else if (leftDown && player.dirX != -1 && player.dirY == 0) player.moveLeft();
-                        else if (rightDown && player.dirX != 1 && player.dirY == 0) player.moveRight();
-                    }
-                    enableBadge("trackPacmanBadge");
+                    }).catch(function (ex) {
+                    console.log(ex)
+                    showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT TRACK PACMANS MOVEMENTS</p>");
+                });
+            }
+
+            if (level.cellData[cx][cy] == 1) {
+                level.pips[cx][cy].munch();
+                level.cellData[cx][cy] = 2;
+                ++score;
+                document.getElementById("score").innerHTML = "SCORE: " + score;
+                if (score == level.totalPips) {
+                    onGameOver(true);
                 }
-            }).catch(function (ex) {
-            console.log(ex)
-            showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT TRACK PACMANS MOVEMENTS</p>");
-        });
+            }
+        } else {
+            if (upDown && player.dirY != -1 && player.dirX == 0) player.moveUp();
+            else if (downDown && player.dirY != 1 && player.dirX == 0) player.moveDown();
+            else if (leftDown && player.dirX != -1 && player.dirY == 0) player.moveLeft();
+            else if (rightDown && player.dirX != 1 && player.dirY == 0) player.moveRight();
+        }
     }
 
     function render() {
