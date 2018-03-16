@@ -25,7 +25,7 @@ function Ghost(x, y, img) {
         this.xp += this.dirX;
         this.yp += this.dirY;
 
-        console.log("GHOST x : " + this.xp + " : y:" + this.yp);
+        // console.log("GHOST x : " + this.xp + " : y:" + this.yp);
 
         this.animation.x = this.xp;
         this.animation.y = this.yp;

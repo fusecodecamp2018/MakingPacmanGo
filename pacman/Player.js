@@ -59,6 +59,7 @@ function Player(x, y, img)
 	{
 		this.xp += this.dirX;
 		this.yp += this.dirY;
+        // console.log("PACMAN x : " + this.xp + " : y:" + this.yp);
 
 		this.animation.x = this.xp;
 		this.animation.y = this.yp;
