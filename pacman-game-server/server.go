@@ -12,6 +12,13 @@ func startGame(w http.ResponseWriter, r *http.Request){
 	w.WriteHeader(http.StatusOK)
 }
 
+func trackPacman(w http.ResponseWriter, r *http.Request){
+	fmt.Println(">> TRACK PACMAN << ")
+	fmt.Println(r.URL.Query())
+
+	w.WriteHeader(http.StatusOK)
+}
+
 func trackGhost(w http.ResponseWriter, r *http.Request){
 	fmt.Println(">> TRACK GHOST << ")
 	fmt.Println(r.URL.Query())
@@ -24,13 +31,6 @@ func moveGhost(w http.ResponseWriter, r *http.Request){
 	fmt.Println(r.URL.Query())
 
 	w.WriteHeader(http.StatusConflict)
-}
-
-func trackPacman(w http.ResponseWriter, r *http.Request){
-	fmt.Println(">> TRACK PACMAN << ")
-	fmt.Println(r.URL.Query())
-
-	w.WriteHeader(http.StatusAlreadyReported)
 }
 
 func isGameOver(w http.ResponseWriter, r *http.Request){
