@@ -38,48 +38,45 @@
 ## Lesson 6
 * add something extra if we have time?
 
+# Pacman API Definition
 
+## Start the Game
 
-
-#Pacman API Definition
-
-##Start the Game
-
-####Request
+#### Request
 
 ```GET /api/startGame```
 
-####Response
+#### Response
 
 ```200 OK```
 
-##Track Pacman movements
+## Track Pacman movements
 
-####Request
+#### Request
 
 ```GET /api/trackPacman?x=<x coordinate>&y=<y coordinate>```
 
-####Response
+#### Response
 
 ```200 OK```
 
-##Add ghost to board
+## Add ghost to board
 
-####Request
+#### Request
 
 ```GET /api/addGhost?ghost=<id of ghost>```
 
-####Response
+#### Response
 
 ```200 OK```
 
-##Randomly move ghosts
+## Randomly move ghosts
 
-####Request
+#### Request
 
 ```GET /api/moveGhost?ghost=<id of ghost>```
 
-####Response
+#### Response
 
 ```200 OK```
 
@@ -91,19 +88,19 @@ LEFT
 RIGHT    
 ```
 
-##Track ghosts
+## Track ghosts
 
-####Request
+#### Request
 
 ```GET /api/trackGhost?ghost=<id of ghost>&x=<x coordinate>&y=<y coordinate>```
 
-##Determine if pacman was caught
+## Determine if pacman was caught
 
-####Request
+#### Request
 
 ```GET /api/isGameOver```
 
-####Response
+#### Response
 
 ```200 OK```
 
