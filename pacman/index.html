@@ -97,14 +97,6 @@
 
         // ghost
         ghosts = []
-//        ghost1 = new Ghost(CELL_SIZE * 11, CELL_SIZE * 5, ghostImage);
-//        ghost2 = new Ghost(CELL_SIZE * 11, CELL_SIZE * 5, ghostImage);
-
-//        ghosts.push(ghost1)
-//        ghosts.push(ghost2)
-//        for (let ghost of ghosts) {
-//            charcontainer.appendChild(ghost.domElement);
-//        }
 
         infobg = document.createElement('div');
         infobg.id = "infobg";
@@ -145,16 +137,25 @@
 
         player.init();
 
-        for (let ghost of ghosts) {
-            ghost.init();
-        }
-
-
         showInfo("<p> CLICK TO START</p>");
     }
 
     function addGhost(img){
-        console.log(img.src)
+        fetch("/api/addGhost?ghost=" + img.id)
+            .then(function(response){
+                if(response.status === 200){
+                    var ghost = new Ghost(CELL_SIZE * 11, CELL_SIZE * 5, img);
+                    ghosts.push(ghost)
+                    charcontainer.appendChild(ghost.domElement);
+                    ghost.init();
+                    enableBadge("addGhostBadge");
+                }else{
+                    showInfo("<h1 class='flippedSadFace'>:(</h1> ADDING A GHOST IS NOT SUPPORTED ON THE GAME SERVER.")
+                }
+            }).catch(function(){
+            console.log(ex)
+            showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT ADD A GHOST</p>");
+        });
     }
 
     function run() {
@@ -206,12 +207,6 @@
                                 onGameOver(true);
                             }
                         }
-
-//                isSameRow = player.row == ghost.row;
-//                isSameColumn = player.column == ghost.column;
-//                if (isSameRow && isSameColumn) {
-//                    break;
-//                }
                     }
                     else {
                         if (upDown && player.dirY != -1 && player.dirX == 0) player.moveUp();
@@ -219,25 +214,6 @@
                         else if (leftDown && player.dirX != -1 && player.dirY == 0) player.moveLeft();
                         else if (rightDown && player.dirX != 1 && player.dirY == 0) player.moveRight();
                     }
-
-//            if (ghost.xp % CELL_SIZE == 0 && ghost.yp % CELL_SIZE == 0) {
-//                updateGhost();
-//
-//                isSameRow = player.row == ghost.row;
-//                isSameColumn = player.column == ghost.column;
-//            }
-
-
-//            if (isSameRow || isSameColumn) {
-//                var dx = Math.abs(player.xp - ghost.xp);
-//                var dy = Math.abs(player.yp - ghost.yp);
-//                var dist = Math.sqrt(dx * dx + dy * dy);
-//
-//                if (dist < CELL_SIZE) {
-//                    onGameOver(false);
-//                    break;
-//                }
-//            }
                     enableBadge("trackPacmanBadge");
                 }
             }).catch(function (ex) {
