@@ -63,9 +63,6 @@
     var playerImage = assetImages["player"] = new Image();
     assetImages["player"].src = "./player_animated.png";
 
-    var ghostImage = assetImages["ghost"] = new Image();
-    assetImages["ghost"].src = "./ghost.png";
-
     var levelImage = assetImages["level"] = new Image();
     assetImages["level"].src = "level_2.png";
 
@@ -126,6 +123,26 @@
         scoreContainer.style.width = SCREEN_WIDTH + 'px';
         document.body.appendChild(scoreContainer);
 
+        ghostContainer = document.createElement('div');
+        ghostContainer.id = "ghostContainer";
+        document.body.appendChild(ghostContainer);
+
+        for(var i = 1; i <= 5; i ++){
+            var cropContainer = document.createElement('div');
+            cropContainer.className = "crop-container"
+
+            var ghostImage = new Image();
+            ghostImage.src = "./ghost" + i +".png";
+            ghostImage.id = "ghost" + i;
+
+            cropContainer.appendChild(ghostImage)
+            ghostContainer.appendChild(cropContainer)
+            cropContainer.addEventListener("click", function(evt){
+               addGhost(evt.target);
+            });
+        }
+
+
         player.init();
 
         for (let ghost of ghosts) {
@@ -134,6 +151,10 @@
 
 
         showInfo("<p> CLICK TO START</p>");
+    }
+
+    function addGhost(img){
+        console.log(img.src)
     }
 
     function run() {
@@ -417,6 +438,25 @@
         text-align: center;
         font: 32px Arial, sans-serif;
         margin-bottom: 5px;
+    }
+
+    .flippedSadFace {
+        transform: rotate(90deg);
+    }
+    .crop-container{
+        width:32px;
+        overflow:hidden;
+        float:left;
+        margin:5px;
+    }
+    #ghostContainer{
+        cursor: pointer;
+        width:210px;
+        margin:0 auto;
+        padding: 0px;
+        position: relative;
+        margin-top: 5px;
+        text-align: center;
     }
 </style>
 
