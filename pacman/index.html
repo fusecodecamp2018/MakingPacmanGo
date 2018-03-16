@@ -100,14 +100,14 @@
 
         // ghost
         ghosts = []
-        ghost1 = new Ghost(CELL_SIZE * 11, CELL_SIZE * 5, ghostImage);
+//        ghost1 = new Ghost(CELL_SIZE * 11, CELL_SIZE * 5, ghostImage);
 //        ghost2 = new Ghost(CELL_SIZE * 11, CELL_SIZE * 5, ghostImage);
 
-        ghosts.push(ghost1)
+//        ghosts.push(ghost1)
 //        ghosts.push(ghost2)
-        for (let ghost of ghosts) {
-            charcontainer.appendChild(ghost.domElement);
-        }
+//        for (let ghost of ghosts) {
+//            charcontainer.appendChild(ghost.domElement);
+//        }
 
         infobg = document.createElement('div');
         infobg.id = "infobg";
@@ -156,9 +156,6 @@
 
     function update() {
         player.update();
-        for (let ghost of ghosts) {
-            ghost.update();
-
 
             console.log(">>> UPDATE <<<")
             if (player.xp % CELL_SIZE == 0 && player.yp % CELL_SIZE == 0) {
@@ -184,12 +181,11 @@
                     }
                 }
 
-                isSameRow = player.row == ghost.row;
-                isSameColumn = player.column == ghost.column;
-
-                if (isSameRow && isSameColumn) {
-                    break;
-                }
+//                isSameRow = player.row == ghost.row;
+//                isSameColumn = player.column == ghost.column;
+//                if (isSameRow && isSameColumn) {
+//                    break;
+//                }
             }
             else {
                 if (upDown && player.dirY != -1 && player.dirX == 0) player.moveUp();
@@ -198,25 +194,24 @@
                 else if (rightDown && player.dirX != 1 && player.dirY == 0) player.moveRight();
             }
 
-            if (ghost.xp % CELL_SIZE == 0 && ghost.yp % CELL_SIZE == 0) {
-                updateGhost();
+//            if (ghost.xp % CELL_SIZE == 0 && ghost.yp % CELL_SIZE == 0) {
+//                updateGhost();
+//
+//                isSameRow = player.row == ghost.row;
+//                isSameColumn = player.column == ghost.column;
+//            }
 
-                isSameRow = player.row == ghost.row;
-                isSameColumn = player.column == ghost.column;
-            }
 
-
-            if (isSameRow || isSameColumn) {
-                var dx = Math.abs(player.xp - ghost.xp);
-                var dy = Math.abs(player.yp - ghost.yp);
-                var dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < CELL_SIZE) {
-                    onGameOver(false);
-                    break;
-                }
-            }
-        }
+//            if (isSameRow || isSameColumn) {
+//                var dx = Math.abs(player.xp - ghost.xp);
+//                var dy = Math.abs(player.yp - ghost.yp);
+//                var dist = Math.sqrt(dx * dx + dy * dy);
+//
+//                if (dist < CELL_SIZE) {
+//                    onGameOver(false);
+//                    break;
+//                }
+//            }
     }
 
     function render() {
