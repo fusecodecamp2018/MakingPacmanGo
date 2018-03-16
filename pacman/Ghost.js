@@ -1,8 +1,9 @@
-function Ghost(x, y, img) {
+function Ghost(id, x, y, img) {
+    this.id = id;
     this.row = x / CELL_SIZE;
     this.column = y / CELL_SIZE;
 
-    this.speed = 1;
+    this.speed = 32;
 
     var xp = this.xp = this.startX = x;
     var yp = this.yp = this.startY = y;
@@ -17,9 +18,51 @@ function Ghost(x, y, img) {
     animation.offsetY = 0;
     animation.offsetX = 0;
     animation.looping = true;
-    animation.play();
+    animation.stop();
 
     var domElement = this.domElement = this.animation.domElement;
+
+    this.moveRight = function()
+    {
+        this.dirX = this.speed;
+        this.dirY = 0;
+        this.animation.rotation = 0;
+        if(!this.animation.playing) this.animation.play();
+    };
+
+    this.moveLeft = function()
+    {
+        this.dirX = -this.speed;
+        this.dirY = 0;
+        this.animation.rotation = 0;
+        if(!this.animation.playing) this.animation.play();
+    };
+
+    this.moveUp = function()
+    {
+        this.dirX = 0;
+        this.dirY = -this.speed;
+        this.animation.rotation = 0;
+        if(!this.animation.playing) this.animation.play();
+    };
+
+    this.moveDown = function()
+    {
+        this.dirX = 0;
+        this.dirY = this.speed;
+        this.animation.rotation = 0;
+        if(!this.animation.playing) this.animation.play();
+    };
+
+    this.stopMovement = function()
+    {
+        this.dirX = this.dirY = 0;
+        this.animation.stop();
+    };
+
+    this.isStopped = function(){
+        return this.dirX === 0 && this.dirY === 0;
+    };
 
     this.update = function () {
         this.xp += this.dirX;

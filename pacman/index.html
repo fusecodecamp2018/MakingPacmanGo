@@ -131,6 +131,7 @@
             ghostContainer.appendChild(cropContainer)
             cropContainer.addEventListener("click", function(evt){
                addGhost(evt.target);
+                evt.target.parentElement.removeChild(evt.target)
             });
         }
 
@@ -144,7 +145,7 @@
         fetch("/api/addGhost?ghost=" + img.id)
             .then(function(response){
                 if(response.status === 200){
-                    var ghost = new Ghost(CELL_SIZE * 11, CELL_SIZE * 5, img);
+                    var ghost = new Ghost(img.id, CELL_SIZE * 11, CELL_SIZE * 5, img);
                     ghosts.push(ghost)
                     charcontainer.appendChild(ghost.domElement);
                     ghost.init();
@@ -204,7 +205,6 @@
                     showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT TRACK PACMANS MOVEMENTS</p>");
                 });
             }
-
             if (level.cellData[cx][cy] == 1) {
                 level.pips[cx][cy].munch();
                 level.cellData[cx][cy] = 2;
@@ -230,70 +230,62 @@
         }
     }
 
-    function updateGhost() {
-        var playerCellX = player.row;
-        var playerCellY = player.column;
+    function moveSingleGhost(i) {
+        var ghost = ghosts[i];
+        fetch("/api/moveGhost?ghost=" + ghost.id)
+            .then(function (response) {
+                if (response.status !== 200) {
+                    showInfo("<h1 class='flippedSadFace'>:(</h1> <p>MOVING OF A GHOST NOT IMPLEMENTED</p>");
+                } else {
+                    response.text().then(function (text) {
+                        var upDown = text === "UP",
+                            downDown = text === "DOWN",
+                            leftDown = text === "LEFT",
+                            rightDown = text === "RIGHT";
 
-        var playerChangedPos = (playerCellX != lastX || playerCellY != lastY);
-        lastX = playerCellX;
-        lastY = playerCellY;
+                        if (ghost.xp % CELL_SIZE === 0 && ghost.yp % CELL_SIZE === 0) {
+                            var cx = ghost.row = ghost.xp / CELL_SIZE;
+                            var cy = ghost.column = ghost.yp / CELL_SIZE;
 
-        debugger;
+                            if (upDown && ghost.dirY > -1 && level.cellData[cx][cy - 1] != 0) ghost.moveUp();
+                            else if (downDown && ghost.dirY < 1 && level.cellData[cx][cy + 1] != 0) ghost.moveDown();
+                            else if (leftDown && ghost.dirX > -1 && level.cellData[cx - 1][cy] != 0) ghost.moveLeft();
+                            else if (rightDown && ghost.dirX < 1 && level.cellData[cx + 1][cy] != 0) ghost.moveRight();
+                            else {
+                                ghost.stopMovement();
+                            }
 
-        for (let ghost of ghosts) {
-            var lastRow = ghost.row;
-            var lastColumn = ghost.column;
-
-            var cx = ghost.row = ghost.xp / CELL_SIZE;
-            var cy = ghost.column = ghost.yp / CELL_SIZE;
-
-            if (!ghost.chasing && (ghost.dirX != 0 || ghost.dirY != 0)) {
-                var nextTileFree = false;
-
-                if (ghost.dirY <= -1 && level.cellData[cx][cy - 1] != 0) nextTileFree = true;
-                else if (ghost.dirY >= 1 && level.cellData[cx][cy + 1] != 0) nextTileFree = true;
-                else if (ghost.dirX <= -1 && level.cellData[cx - 1][cy] != 0) nextTileFree = true;
-                else if (ghost.dirX >= 1 && level.cellData[cx + 1][cy] != 0) nextTileFree = true;
-
-                if (nextTileFree) return;
-            }
-
-            var nodes = [];
-
-            if (level.cellData[cx + 1][cy] != 0) nodes.push([cx + 1, cy, 1, 0]);
-            if (level.cellData[cx - 1][cy] != 0) nodes.push([cx - 1, cy, -1, 0]);
-            if (level.cellData[cx][cy + 1] != 0) nodes.push([cx, cy + 1, 0, 1]);
-            if (level.cellData[cx][cy - 1] != 0) nodes.push([cx, cy - 1, 0, -1]);
-
-            if (nodes.length == 1) {
-                ghost.dirX = nodes[0][2];
-                ghost.dirY = nodes[0][3];
-            }
-            else if (!ghost.chasing) {
-                var node = nodes[Math.floor(Math.random() * nodes.length)];
-                ghost.dirX = node[2];
-                ghost.dirY = node[3];
-            }
-            else {
-                var smallest = Infinity;
-                var node;
-
-                var i = nodes.length;
-                while (--i > -1) {
-                    var dx = Math.abs(playerCellX - nodes[i][0]);
-                    var dy = Math.abs(playerCellY - nodes[i][1]);
-                    var dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < smallest && ((nodes[i][0] != lastRow && nodes[i][1] != lastColumn) || playerChangedPos)) {
-                        smallest = dist;
-                        node = nodes[i];
-                    }
+                            if (!ghost.isStopped()) {
+                                ghost.update();
+                                fetch("/api/trackGhost?ghost=" + ghost.id + "&x=" + ghost.xp + "&y=" + ghost.yp)
+                                    .then(function (response) {
+                                        if (response.status !== 200) {
+                                            showInfo("<h1 class='flippedSadFace'>:(</h1> <p>TRACKING GHOST MOVEMENTS NOT IMPLEMENTED</p>");
+                                        } else {
+                                            enableBadge("moveGhostBadge");
+                                        }
+                                    }).catch(function (ex) {
+                                    console.log(ex)
+                                    showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT TRACK GHOST MOVEMENTS</p>");
+                                });
+                            }
+                        } else {
+                            if (upDown && ghost.dirY != -1 && ghost.dirX == 0) ghost.moveUp();
+                            else if (downDown && ghost.dirY != 1 && ghost.dirX == 0) ghost.moveDown();
+                            else if (leftDown && ghost.dirX != -1 && ghost.dirY == 0) ghost.moveLeft();
+                            else if (rightDown && ghost.dirX != 1 && ghost.dirY == 0) ghost.moveRight();
+                        }
+                    })
                 }
+            }).catch(function (ex) {
+            console.log(ex)
+            showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT MOVE A GHOST</p>");
+        });
+    }
 
-                if (node) {
-                    ghost.dirX = node[2];
-                    ghost.dirY = node[3];
-                }
-            }
+    function moveGhosts() {
+        for(var i = 0; i < ghosts.length; i++) {
+            moveSingleGhost(i);
         }
     }
 
@@ -376,6 +368,7 @@
                     resetGame();
                     enableBadge("startGameBadge")
                     gameInterval = setInterval(run, 1);
+                    setInterval(moveGhosts, 500)
                     info.style.opacity = 0;
                     infobg.style.opacity = 0;
                 } else {

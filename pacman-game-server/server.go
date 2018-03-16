@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"fmt"
+	"math/rand"
 )
 
 func startGame(w http.ResponseWriter, r *http.Request){
@@ -37,7 +38,12 @@ func moveGhost(w http.ResponseWriter, r *http.Request){
 	fmt.Println(">> MOVE GHOST << ")
 	fmt.Println(r.URL.Query())
 
-	w.WriteHeader(http.StatusConflict)
+	movements := [4]string{"UP", "DOWN", "LEFT", "RIGHT"}
+
+	move := movements[rand.Intn(len(movements))]
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(move))
 }
 
 func isGameOver(w http.ResponseWriter, r *http.Request){
