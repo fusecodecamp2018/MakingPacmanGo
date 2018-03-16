@@ -29,6 +29,7 @@
 
     // game vars
     var gameInterval,
+        ghostInterval,
         score = 0,
         isPlaying, isKeyDown,
         lastX, lastY,
@@ -322,6 +323,7 @@
 
         info.style.opacity = 1;
         infobg.style.opacity = 0.55;
+        stopGame();
     }
 
     function onClicked(e) {
@@ -368,7 +370,7 @@
                     resetGame();
                     enableBadge("startGameBadge")
                     gameInterval = setInterval(run, 1);
-                    setInterval(moveGhosts, 500)
+                    ghostInterval = setInterval(moveGhosts, 500)
                     info.style.opacity = 0;
                     infobg.style.opacity = 0;
                 } else {
@@ -388,6 +390,7 @@
     function stopGame() {
         isPlaying = false;
         clearInterval(gameInterval);
+        clearInterval(ghostInterval);
     }
 </script>
 
