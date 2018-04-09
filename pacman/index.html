@@ -144,6 +144,7 @@
         fetch("/api/addGhost?ghost=" + img.id)
             .then(function(response){
                 if(response.status === 200){
+                    // return the name of the ghost back to the app to show how data is sent?
                     var ghost = new Ghost(img.id, CELL_SIZE * 11, CELL_SIZE * 5, img);
                     ghosts.push(ghost)
                     charcontainer.appendChild(ghost.domElement);
