@@ -369,8 +369,8 @@
                     resetGame();
                     enableBadge("startGameBadge")
                     gameInterval = setInterval(run, 1);
-                    ghostInterval = setInterval(moveGhosts, 500)
-                    gameOverInterval = setInterval(isGameOver, 500);
+                    ghostInterval = setInterval(moveGhosts, 250)
+                    gameOverInterval = setInterval(isCaught, 100);
                     info.style.opacity = 0;
                     infobg.style.opacity = 0;
                 } else {
@@ -382,8 +382,8 @@
             });
     }
 
-    function isGameOver(){
-        fetch("/api/isGameOver")
+    function isCaught(){
+        fetch("/api/isCaught")
             .then(function (response) {
                 if (response.status === 200) {
                     response.text().then(function(text){
