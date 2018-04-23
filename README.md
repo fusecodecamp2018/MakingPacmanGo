@@ -23,9 +23,10 @@
 * Show finished product of what we're building
 * Show highlights of JS code
 * Show boilerplate code and what we'll be adding to it
-* create a ghost
+* intro to http library
 
 ## Lesson 4
+* create ghost
 * move a ghost
 * create pacman
 * move pacman
