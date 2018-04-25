@@ -1,11 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"math/rand"
 	"net/http"
+	"fmt"
 	"strconv"
+	"math/rand"
 )
+
 type Coordinates struct {
 	X int
 	Y int
@@ -14,13 +15,7 @@ type Coordinates struct {
 var GhostCoordinates = make(map[string]Coordinates)
 var Pacman = Coordinates{X:0,Y:0}
 
-
 func startGame(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(">> START GAME << ")
-	fmt.Println(r.URL.Query())
-	GhostCoordinates = make(map[string]Coordinates)
-	Pacman = Coordinates{X:0,Y:0}
-
 	w.WriteHeader(http.StatusOK)
 }
 

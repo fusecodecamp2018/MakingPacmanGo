@@ -1,7 +1,9 @@
 # Setup
-* Each "Lesson" limited to 50 minutes
-* Build on previous lesson
-* 2 lessons needed to teach the basics?
+* Go Installation 
+    * https://golang.org/dl/
+    * Code Editors:
+        * VSCode https://code.visualstudio.com/
+        * GoLand https://www.jetbrains.com/go/
 
 
 ## Lesson 1
@@ -10,19 +12,19 @@
 * Computer setup
 * Writing hello world
 * compiling/running
-* Vars, loops (should be quick if students already have experience)
+* Vars, loops, etc
 
 ## Lesson 2
 * methods
 * imports
 * intro to goroutines
 * put everything together
-* Structs (time permitting, for more experienced kids)
+* Structs
 
 ## Lesson 3 
-* Show finished product of what we're building
-* Show highlights of JS code
-* Show boilerplate code and what we'll be adding to it
+* Show finished product
+* JS code
+* Starting Code
 * intro to http library
 
 ## Lesson 4
@@ -31,13 +33,12 @@
 * create pacman
 * move pacman
 
-
 ## Lesson 5
 * pacman/ghost collision
 * scoring
 
 ## Lesson 6
-* add something extra if we have time?
+* Separate Packages
 
 # Pacman API Definition
 

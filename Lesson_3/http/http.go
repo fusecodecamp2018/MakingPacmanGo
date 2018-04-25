@@ -1,4 +1,4 @@
-package Lesson_3
+package main
 
 import (
 	"net/http"

@@ -1,4 +1,4 @@
-package Lesson_2
+package main
 // A _goroutine_ is a lightweight thread of execution.
 
 import "fmt"
