@@ -1,6 +1,7 @@
 # Setup
 * Go Installation 
     * https://golang.org/dl/
+    * https://golang.org/doc/install
     * Code Editors:
         * VSCode https://code.visualstudio.com/
         * GoLand https://www.jetbrains.com/go/
