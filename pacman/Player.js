@@ -37,7 +37,7 @@ function Player(x, y, img)
 	{
 		this.dirX = 0;
 		this.dirY = -this.speed;
-		this.animation.rotation = 270;
+		this.animation.rotation = 90;
 		if(!this.animation.playing) this.animation.play();
 	};
 
@@ -45,7 +45,7 @@ function Player(x, y, img)
 	{
 		this.dirX = 0;
 		this.dirY = this.speed;
-		this.animation.rotation = 90;
+		this.animation.rotation = 270;
 		if(!this.animation.playing) this.animation.play();
 	};
 

@@ -194,7 +194,7 @@
             else if (player.dirY == -1 && level.cellData[cx][cy - 1] == 0) player.stopMovement();
 
             if(!player.isStopped()) {
-                fetch("/api/trackPacman?x=" + player.row + "&y=" + player.column)
+                fetch("/api/trackPacman?x=" + (player.row-1) + "&y=" + (player.column-1))
                     .then(function (response) {
                         if (response.status !== 200) {
                             showInfo("<h1 class='flippedSadFace'>:(</h1> <p>TRACKING PACMANS MOVEMENTS NOT IMPLEMENTED</p>");
@@ -262,7 +262,7 @@
 
                             if (!ghost.isStopped()) {
                                 ghost.update();
-                                fetch("/api/trackGhost?ghost=" + ghost.id + "&x=" + ghost.row + "&y=" + ghost.column)
+                                fetch("/api/trackGhost?ghost=" + ghost.id + "&x=" + (ghost.row-1) + "&y=" + (ghost.column-1))
                                     .then(function (response) {
                                         if (response.status !== 200) {
                                             showInfo("<h1 class='flippedSadFace'>:(</h1> <p>TRACKING GHOST MOVEMENTS NOT IMPLEMENTED</p>");

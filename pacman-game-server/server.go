@@ -62,6 +62,8 @@ func trackPacman(w http.ResponseWriter, r *http.Request) {
 	xint, _ := strconv.Atoi(x[0])
 	yint, _ := strconv.Atoi(y[0])
 	Pacman = Coordinates{X: xint, Y: yint}
+	//go GhostMovement.CalculateGhostMoves(Pacman, GhostCoordinates)
+
 	fmt.Println("Pacman's coordinates are: " + x[0] + "," + y[0])
 
 	w.WriteHeader(http.StatusOK)
@@ -93,8 +95,8 @@ func moveGhost(w http.ResponseWriter, r *http.Request) {
 }
 
 func isCaught(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(">> GAME OVER << ")
-	fmt.Println(r.URL.Query())
+	//fmt.Println(">> GAME OVER << ")
+	//fmt.Println(r.URL.Query())
 	for _, coordinates := range GhostCoordinates {
 		if coordinates.X == Pacman.X && coordinates.Y == Pacman.Y {
 			w.WriteHeader(http.StatusOK)
