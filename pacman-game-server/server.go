@@ -106,10 +106,6 @@ func isCaught(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func getBoard(w http.ResponseWriter, r *http.Request) {
-
-}
-
 func main() {
 	http.HandleFunc("/api/startGame", startGame)
 	http.HandleFunc("/api/addGhost", addGhost)
@@ -117,7 +113,6 @@ func main() {
 	http.HandleFunc("/api/trackPacman", trackPacman)
 	http.HandleFunc("/api/moveGhost", moveGhost)
 	http.HandleFunc("/api/isCaught", isCaught)
-	http.HandleFunc("/api/getBoard", getBoard)
 	http.Handle("/", http.FileServer(http.Dir("../pacman")))
 	http.ListenAndServe(":3000", nil)
 }
