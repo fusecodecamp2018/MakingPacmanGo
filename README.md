@@ -6,6 +6,7 @@
         * VSCode https://code.visualstudio.com/
         * GoLand https://www.jetbrains.com/go/
 
+# Lessons
 
 ## Lesson 1
 * What is Go
@@ -114,3 +115,7 @@ Possible Response Text :
 true
 false    
 ```
+
+# Extended learning about GO
+
+https://github.com/avelino/awesome-go
