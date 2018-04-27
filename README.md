@@ -40,6 +40,8 @@
 
 ## Lesson 6
 * Separate Packages
+* goroutines
+* advanced ghost movements
 
 # Pacman API Definition
 
