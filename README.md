@@ -125,3 +125,5 @@ false
 https://github.com/avelino/awesome-go
 
 https://gobyexample.com/
+
+https://play.golang.org/
