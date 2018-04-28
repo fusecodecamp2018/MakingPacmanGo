@@ -123,3 +123,5 @@ false
 # Extended learning about GO
 
 https://github.com/avelino/awesome-go
+
+https://gobyexample.com/
