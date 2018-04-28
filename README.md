@@ -100,11 +100,15 @@ RIGHT
 
 ```GET /api/trackGhost?ghost=<id of ghost>&x=<x coordinate>&y=<y coordinate>```
 
+#### Response
+
+```200 OK```
+
 ## Determine if pacman was caught
 
 #### Request
 
-```GET /api/isGameOver```
+```GET /api/isCaught```
 
 #### Response
 
