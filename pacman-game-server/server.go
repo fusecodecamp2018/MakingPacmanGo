@@ -2,47 +2,22 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"net/http"
 	"strconv"
+	"github.com/cahcommercial/MakingPacmanGo/pacman-game-server/common"
+	"github.com/cahcommercial/MakingPacmanGo/pacman-game-server/GhostMovement"
 )
 
-type Coordinates struct {
-	X int
-	Y int
-}
-
-var Board = [][]int{
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-	{0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0},
-	{0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0},
-	{0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0},
-	{0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0},
-	{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-	{0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0},
-	{0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
-	{0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0},
-	{0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0},
-	{0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0},
-	{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-	{0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0},
-	{0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0},
-	{0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0},
-	{0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0},
-	{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-}
-
-var GhostCoordinates = make(map[string]Coordinates)
-var Pacman = Coordinates{X: 0, Y: 0}
+var GhostChannels = make(map[string]chan string)
+var GhostCoordinates = make(map[string]*common.Coordinates)
+var Pacman = common.Coordinates{X: 0, Y: 0}
 
 func startGame(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(">> START GAME << ")
 	fmt.Println(r.URL.Query())
-	GhostCoordinates = make(map[string]Coordinates)
-	Pacman = Coordinates{X: 0, Y: 0}
+	GhostCoordinates = make(map[string]*common.Coordinates)
+	GhostChannels = make(map[string]chan string)
+	Pacman = common.Coordinates{X: 0, Y: 0}
 
 	w.WriteHeader(http.StatusOK)
 }
@@ -50,6 +25,13 @@ func startGame(w http.ResponseWriter, r *http.Request) {
 func addGhost(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(">> ADD GHOST << ")
 	fmt.Println(r.URL.Query())
+
+	ghost, _ := r.URL.Query()["ghost"]
+	GhostChannels[ghost[0]] = make(chan string, 2)
+	coordinates := common.Coordinates{X: 1000, Y: 1000}
+	GhostCoordinates[ghost[0]] = &coordinates
+
+	go GhostMovement.CalculateGhostMoves(&Pacman, ghost[0], &coordinates, GhostChannels[ghost[0]])
 
 	w.WriteHeader(http.StatusOK)
 }
@@ -61,8 +43,7 @@ func trackPacman(w http.ResponseWriter, r *http.Request) {
 	y, _ := r.URL.Query()["y"]
 	xint, _ := strconv.Atoi(x[0])
 	yint, _ := strconv.Atoi(y[0])
-	Pacman = Coordinates{X: xint, Y: yint}
-	//go GhostMovement.CalculateGhostMoves(Pacman, GhostCoordinates)
+	Pacman = common.Coordinates{X: xint, Y: yint}
 
 	fmt.Println("Pacman's coordinates are: " + x[0] + "," + y[0])
 
@@ -78,17 +59,20 @@ func trackGhost(w http.ResponseWriter, r *http.Request) {
 	yint, _ := strconv.Atoi(y[0])
 	ghost, _ := r.URL.Query()["ghost"]
 	fmt.Println("Ghost " + ghost[0] + " coordinates are: " + x[0] + "," + y[0])
-	GhostCoordinates[ghost[0]] = Coordinates{X: xint, Y: yint}
+	coordinates := GhostCoordinates[ghost[0]]
+	coordinates.X = xint
+	coordinates.Y = yint
 	w.WriteHeader(http.StatusOK)
 }
 
 func moveGhost(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(">> MOVE GHOST << ")
 	fmt.Println(r.URL.Query())
+	ghost, _ := r.URL.Query()["ghost"]
 
-	movements := [4]string{"UP", "DOWN", "LEFT", "RIGHT"}
-
-	move := movements[rand.Intn(len(movements))]
+	fmt.Println("BEFORE MOVE GHOST")
+	move := <- GhostChannels[ghost[0]]
+	fmt.Println("AFTER MOVE GHOST :" + move)
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(move))

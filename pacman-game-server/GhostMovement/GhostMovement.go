@@ -1,9 +1,10 @@
 package GhostMovement
 
-type Coordinates struct {
-	X int
-	Y int
-}
+import (
+	"math/rand"
+	"github.com/cahcommercial/MakingPacmanGo/pacman-game-server/common"
+	"fmt"
+)
 
 var Board = [][]int{
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -28,42 +29,54 @@ var Board = [][]int{
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 }
 
-func CalculateGhostMoves(pacman Coordinates, ghosts map[string]Coordinates) []string {
-	for ghostname, ghostcoord := range ghosts {
-		switch ghostname {
-		case "blinky":
-			go Blinky(pacman, ghostcoord)
-		case "clyde":
-			go Clyde(pacman, ghostcoord)
-		case "funky":
-			go Funky(pacman, ghostcoord)
-		case "inky":
-			go Inky(pacman, ghostcoord)
-		case "pinky":
-			go Pinky(pacman, ghostcoord)
-		}
-	}
+func CalculateGhostMoves(pacman *common.Coordinates, ghostname string, ghostcoord *common.Coordinates, ghostChannel chan string) {
+	fmt.Println(">>> CALCULATE GHOST <<<")
+	for {
+		//TODO fix me cannot get ghosts to have the value from server.go
+		fmt.Printf(">>> INFINITE LOOP  <<< %d, %d\n", ghostcoord.X, ghostcoord.Y)
+			fmt.Println(">>> DOING IT <<" + ghostname)
 
+			switch ghostname {
+			case "blinky":
+				fmt.Println(">>> BLINKY <<")
+				Blinky(*pacman, *ghostcoord, ghostChannel)
+			case "clyde":
+				Clyde(*pacman, *ghostcoord, ghostChannel)
+			case "funky":
+				Funky(*pacman, *ghostcoord, ghostChannel)
+			case "inky":
+				Inky(*pacman, *ghostcoord, ghostChannel)
+			case "pinky":
+				Pinky(*pacman, *ghostcoord, ghostChannel)
+			default :
+				fmt.Println(">>> NOTHING <<")
+			}
+	}
 }
 
-func Blinky(pacman Coordinates, ghost Coordinates) string {
+func Blinky(pacman common.Coordinates, ghost common.Coordinates, ghostChannel chan string) {
 	//always check coordinate below if 1
 	//if below 1 move down
 	//if left 1 move left
 	//if top 1 move up
 	//if right 1 move right
-	case
-
+	ghostChannel <- random()
 }
-func Clyde(pacman Coordinates, ghost Coordinates){
-
+func Clyde(pacman common.Coordinates, ghost common.Coordinates, ghostChannel chan string){
+	ghostChannel <- random()
 }
-func Funky(pacman Coordinates, ghost Coordinates){
-
+func Funky(pacman common.Coordinates, ghost common.Coordinates, ghostChannel chan string){
+	ghostChannel <- random()
 }
-func Inky(pacman Coordinates, ghost Coordinates){
-
+func Inky(pacman common.Coordinates, ghost common.Coordinates, ghostChannel chan string){
+	ghostChannel <- random()
 }
-func Pinky(pacman Coordinates, ghost Coordinates){
+func Pinky(pacman common.Coordinates, ghost common.Coordinates, ghostChannel chan string){
+	ghostChannel <- random()
+}
 
+func random() string{
+	fmt.Println(">>> MOVING <<")
+	movements := [4]string{"UP", "DOWN", "LEFT", "RIGHT"}
+	return movements[rand.Intn(len(movements))]
 }
