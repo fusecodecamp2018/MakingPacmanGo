@@ -194,10 +194,24 @@
             else if (downDown && player.dirY < 1 && level.cellData[cx][cy + 1] != 0) player.moveDown();
             else if (leftDown && player.dirX > -1 && level.cellData[cx - 1][cy] != 0) player.moveLeft();
             else if (rightDown && player.dirX < 1 && level.cellData[cx + 1][cy] != 0) player.moveRight();
-            else if (player.dirX == 1 && level.cellData[cx + 1][cy] == 0) player.stopMovement();
-            else if (player.dirX == -1 && level.cellData[cx - 1][cy] == 0) player.stopMovement();
-            else if (player.dirY == 1 && level.cellData[cx][cy + 1] == 0) player.stopMovement();
-            else if (player.dirY == -1 && level.cellData[cx][cy - 1] == 0) player.stopMovement();
+            else if ((player.dirX == 1 && level.cellData[cx + 1][cy] == 0) ||
+                (player.dirX == -1 && level.cellData[cx - 1][cy] == 0) ||
+                (player.dirY == 1 && level.cellData[cx][cy + 1] == 0) ||
+                (player.dirY == -1 && level.cellData[cx][cy - 1] == 0)
+            ) {
+                player.stopMovement();
+                fetch("/api/trackPacman?x=" + (player.row-1) + "&y=" + (player.column-1))
+                    .then(function (response) {
+                        if (response.status !== 200) {
+                            showInfo("<h1 class='flippedSadFace'>:(</h1> <p>TRACKING PACMANS MOVEMENTS NOT IMPLEMENTED</p>");
+                        } else {
+                            enableBadge("trackPacmanBadge");
+                        }
+                    }).catch(function (ex) {
+                    console.log(ex)
+                    showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT TRACK PACMANS MOVEMENTS</p>");
+                });
+            }
 
             if(!player.isStopped()) {
                 fetch("/api/trackPacman?x=" + (player.row-1) + "&y=" + (player.column-1))
@@ -264,6 +278,17 @@
                             else if (rightDown && ghost.dirX < 1 && level.cellData[cx + 1][cy] != 0) ghost.moveRight();
                             else {
                                 ghost.stopMovement();
+                                fetch("/api/trackGhost?ghost=" + ghost.id + "&x=" + (ghost.row-1) + "&y=" + (ghost.column-1))
+                                    .then(function (response) {
+                                        if (response.status !== 200) {
+                                            showInfo("<h1 class='flippedSadFace'>:(</h1> <p>TRACKING GHOST MOVEMENTS NOT IMPLEMENTED</p>");
+                                        } else {
+                                            enableBadge("trackGhostsBadge");
+                                        }
+                                    }).catch(function (ex) {
+                                    console.log(ex)
+                                    showInfo("<h1 class='flippedSadFace'>:(</h1> <p>IS YOUR GAME SERVER RUNNING?? COULD NOT TRACK GHOST MOVEMENTS</p>");
+                                });
                             }
 
                             if (!ghost.isStopped()) {
@@ -392,6 +417,7 @@
         fetch("/api/isCaught")
             .then(function (response) {
                 if (response.status === 200) {
+                    enableBadge("gameOverBadge")
                     response.text().then(function(text){
                        if(text == "true"){
                            onGameOver(false)
